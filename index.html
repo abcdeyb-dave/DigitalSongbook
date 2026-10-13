@@ -1,0 +1,115 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f5f7f4">
+  <meta name="description" content="A simple, easy-to-browse digital song catalog.">
+  <link rel="manifest" href="manifest.json" type="application/manifest+json">
+  <link rel="icon" href="icons/icon.svg" type="image/svg+xml">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-title" content="Songbook">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <title>Digital Songbook</title>
+  <link rel="stylesheet" href="styles.css">
+  <script src="app.js" type="module"></script>
+</head>
+<body>
+  <div class="app-shell">
+    <header class="topbar">
+      <a class="brand" href="#top" aria-label="Digital Songbook home">
+        <span class="brand-mark" aria-hidden="true">
+          <svg viewBox="0 0 32 32" fill="none">
+            <path d="M12 23V8l15-3v15" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+            <ellipse cx="8.5" cy="23.5" rx="3.5" ry="2.5" fill="currentColor"/>
+            <ellipse cx="23.5" cy="20.5" rx="3.5" ry="2.5" fill="currentColor"/>
+            <path d="M12 12l15-3" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/>
+          </svg>
+        </span>
+        <span class="brand-name">Digital <span>Songbook</span></span>
+      </a>
+      <div class="topbar-actions">
+        <span class="local-badge" id="connection-status"><span class="status-dot" aria-hidden="true"></span> Catalog included</span>
+        <button class="button button-primary install-button" id="install-button" type="button">Install app</button>
+        <button class="icon-button theme-toggle" id="theme-toggle" type="button" aria-label="Switch to dark theme" title="Switch theme">
+          <svg class="theme-icon theme-icon-sun" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2m0 16v2M4.93 4.93l1.42 1.42m11.3 11.3 1.42 1.42M2 12h2m16 0h2M4.93 19.07l1.42-1.42m11.3-11.3 1.42-1.42"/></svg>
+          <svg class="theme-icon theme-icon-moon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20.9 13A8.5 8.5 0 0 1 11 3.1 8.5 8.5 0 1 0 20.9 13Z"/></svg>
+        </button>
+      </div>
+    </header>
+
+    <main id="top">
+      <section class="welcome" aria-labelledby="page-title">
+        <div class="welcome-copy">
+          <p class="eyebrow"><span class="eyebrow-line"></span> YOUR MUSIC, ORGANIZED</p>
+          <h1 id="page-title">Find the song.<br><span>Find your number.</span></h1>
+          <p class="welcome-description">A little songbook that keeps your whole collection close at hand.</p>
+        </div>
+        <div class="welcome-art" aria-hidden="true">
+          <div class="art-disc"><span class="disc-groove"></span><span class="disc-center"><svg viewBox="0 0 32 32" fill="none"><path d="M12 23V8l15-3v15" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/><ellipse cx="8.5" cy="23.5" rx="3.5" ry="2.5" fill="currentColor"/><ellipse cx="23.5" cy="20.5" rx="3.5" ry="2.5" fill="currentColor"/></svg></span></div>
+          <span class="art-note note-one">♪</span><span class="art-note note-two">♫</span><span class="art-sparkle">✳</span>
+        </div>
+      </section>
+
+      <section class="catalog-section" aria-labelledby="catalog-title">
+        <div class="section-heading">
+          <div>
+            <div class="title-row"><h2 id="catalog-title">Your catalog</h2><span class="song-count" id="song-count">0 songs</span></div>
+            <p class="section-subtitle">Browse the complete song catalog included with this website.</p>
+          </div>
+        </div>
+
+        <div class="search-row">
+          <div class="search-box">
+            <svg class="search-icon" viewBox="0 0 20 20" fill="none" aria-hidden="true"><circle cx="8.8" cy="8.8" r="5.8" stroke="currentColor" stroke-width="1.7"/><path d="m13.2 13.2 4 4" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>
+            <input id="song-search" type="search" placeholder="Search by song or artist..." aria-label="Search by song name or singer / artist" aria-describedby="search-hint search-results-count" autocomplete="off">
+            <button class="clear-search" id="clear-search" type="button" aria-label="Clear search" title="Clear search" hidden>×</button>
+          </div>
+          <div class="search-meta">
+            <p class="search-hint" id="search-hint">Search song names and singer / artist names.</p>
+            <p class="search-results-count" id="search-results-count" aria-live="polite">All songs</p>
+          </div>
+        </div>
+
+        <div class="table-wrap">
+          <p class="application-error" id="application-error" role="alert" hidden></p>
+          <table class="song-table">
+            <thead><tr><th scope="col" class="number-column">NO.</th><th scope="col">SONG NAME</th><th scope="col">SINGER / ARTIST</th></tr></thead>
+            <tbody id="song-list"></tbody>
+          </table>
+          <div class="empty-state" id="empty-state" hidden>
+            <span class="empty-note" aria-hidden="true">♫</span>
+            <p class="empty-title" id="empty-title">Your songbook is ready</p>
+            <p class="empty-description" id="empty-description">No songs match your search.</p>
+          </div>
+        </div>
+        <button class="button button-secondary load-more-button" id="load-more-button" type="button" hidden>Load more results</button>
+        <div class="catalog-footer"><span id="footer-status">Showing 0 songs</span><span class="footer-local"><span class="tiny-lock" aria-hidden="true">●</span> Stored locally in this browser</span></div>
+      </section>
+    </main>
+
+    <footer class="app-footer"><span>Made for the love of music <span aria-hidden="true">♫</span></span><span>Digital Songbook <span class="footer-version">· Song catalog included</span></span></footer>
+  </div>
+
+  <dialog class="install-dialog" id="install-dialog" aria-labelledby="install-title">
+    <div class="dialog-heading">
+      <div>
+        <p class="eyebrow"><span class="eyebrow-line"></span> TAKE IT WITH YOU</p>
+        <h2 id="install-title">Install Digital Songbook</h2>
+      </div>
+      <button class="icon-button dialog-close" id="close-install" type="button" aria-label="Close install instructions">×</button>
+    </div>
+    <p class="dialog-description">Install this song catalog for an app-like window and offline browsing after the first successful load.</p>
+    <div class="install-instructions">
+      <p><strong>Chrome on Windows</strong><br>Use the install icon at the right of the address bar, or open the three-dot menu and choose <em>Cast, save, and share → Install page as app</em> (wording may vary by Chrome version).</p>
+      <p><strong>Chrome on Android</strong><br>Open the site in Chrome, tap the three-dot menu, then choose <em>Install app</em> or <em>Add to Home screen</em>.</p>
+      <p><strong>Safari on iPhone/iPad</strong><br>Tap Share, then <em>Add to Home Screen</em>.</p>
+    </div>
+    <p class="install-requirement">Installation requires the site to be served from HTTPS or localhost. A page opened directly using a <code>file://</code> address is not an installable PWA.</p>
+    <div class="dialog-actions"><button class="button button-primary" id="done-install" type="button">Got it</button></div>
+  </dialog>
+
+  <div class="sr-only" id="catalog-announcement" aria-live="polite"></div>
+</body>
+</html>

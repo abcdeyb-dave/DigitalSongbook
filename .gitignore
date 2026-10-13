@@ -1,0 +1,12 @@
+# Original source PDF is not needed by the published website.
+SongHub_Songbook.pdf
+
+# Local PDF parsing fixtures and bundled PDF.js development library.
+test-fixtures/
+vendor/
+pdf-import.js
+
+# Local editor/OS files.
+.vscode/
+.DS_Store
+Thumbs.db
