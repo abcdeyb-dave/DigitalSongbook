@@ -1,5 +1,5 @@
 const CACHE_PREFIX = 'digital-songbook-';
-const CACHE_NAME = `${CACHE_PREFIX}shell-v3`;
+const CACHE_NAME = `${CACHE_PREFIX}shell-v4`;
 const APP_SHELL = [
   './',
   './index.html',
